@@ -21,16 +21,43 @@ class TestingAlertExperimentTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testAlert_HasTitle() {
+        let sut = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController() as! ViewController
+        
+        UIApplication.sharedApplication().keyWindow?.rootViewController = sut
+        
+        sut.Action = MockAlertAction.self
+        
+        sut.showAlert(UIButton())
+        
+        XCTAssertTrue(sut.presentedViewController is UIAlertController)
+        XCTAssertEqual(sut.presentedViewController?.title, "Test Title")
+        
+        let alertController = sut.presentedViewController as! UIAlertController
+        let action = alertController.actions.first as! MockAlertAction
+        action.handler!(action)
+        
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock {
-            // Put the code you want to measure the time of here.
+    class MockAlertAction : UIAlertAction {
+        
+        typealias Handler = ((UIAlertAction) -> Void)
+        var handler: Handler?
+        var mockTitle: String?
+        var mockStyle: UIAlertActionStyle
+        
+        convenience init(title: String?, style: UIAlertActionStyle, handler: ((UIAlertAction) -> Void)?) {
+            self.init()
+            
+            mockTitle = title
+            mockStyle = style
+            self.handler = handler
+        }
+        
+        override init() {
+            mockStyle = .Default
+            
+            super.init()
         }
     }
-    
 }

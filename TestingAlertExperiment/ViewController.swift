@@ -10,6 +10,8 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    var Action = UIAlertAction.self
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -20,6 +22,15 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-
+    @IBAction func showAlert(sender: UIButton) {
+        let alertViewController = UIAlertController(title: "Test Title", message: "Message", preferredStyle: .Alert)
+        
+        let okAction = Action.init(title: "OK", style: .Default) { (action) -> Void in
+            print("hello")
+        }
+        
+        alertViewController.addAction(okAction)
+        
+        presentViewController(alertViewController, animated: true, completion: nil)
+    }
 }
-
