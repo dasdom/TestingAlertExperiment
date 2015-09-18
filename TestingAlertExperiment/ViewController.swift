@@ -9,28 +9,24 @@
 import UIKit
 
 class ViewController: UIViewController {
-
-    var Action = UIAlertAction.self
+  
+  var Action = UIAlertAction.self
+  var actionString: String?
+  
+  @IBAction func showAlert(sender: UIButton) {
+    let alertViewController = UIAlertController(title: "Test Title", message: "Message", preferredStyle: .Alert)
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+    let okAction = Action.init(title: "OK", style: .Default) { (action) -> Void in
+      self.actionString = "OK"
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    let cancelAction = Action.init(title: "Cancel", style: .Cancel) { (action) -> Void in
+      self.actionString = "Cancel"
     }
-
-    @IBAction func showAlert(sender: UIButton) {
-        let alertViewController = UIAlertController(title: "Test Title", message: "Message", preferredStyle: .Alert)
-        
-        let okAction = Action.init(title: "OK", style: .Default) { (action) -> Void in
-            print("hello")
-        }
-        
-        alertViewController.addAction(okAction)
-        
-        presentViewController(alertViewController, animated: true, completion: nil)
-    }
+    
+    alertViewController.addAction(cancelAction)
+    alertViewController.addAction(okAction)
+    
+    presentViewController(alertViewController, animated: true, completion: nil)
+  }
 }
