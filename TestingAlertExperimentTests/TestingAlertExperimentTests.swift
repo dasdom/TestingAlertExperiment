@@ -15,7 +15,7 @@ class TestingAlertExperimentTests: XCTestCase {
   
   override func setUp() {
     super.setUp()
-  
+    
     sut = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController() as! ViewController
     
     UIApplication.sharedApplication().keyWindow?.rootViewController = sut
@@ -37,12 +37,13 @@ class TestingAlertExperimentTests: XCTestCase {
     sut.Action = MockAlertAction.self
     
     sut.showAlert(UIButton())
-
+    
     let alertController = sut.presentedViewController as! UIAlertController
     let action = alertController.actions.first as! MockAlertAction
-    action.handler!(action)
+    action.mockHandler!(action)
     
     XCTAssertEqual(sut.actionString, "Cancel")
+    XCTAssertEqual(action.mockTitle, "Cancel")
   }
   
   func testAlert_SecondActionStoresOK() {
@@ -52,15 +53,16 @@ class TestingAlertExperimentTests: XCTestCase {
     
     let alertController = sut.presentedViewController as! UIAlertController
     let action = alertController.actions[1] as! MockAlertAction
-    action.handler!(action)
+    action.mockHandler!(action)
     
     XCTAssertEqual(sut.actionString, "OK")
+    XCTAssertEqual(action.mockTitle, "OK")
   }
   
   class MockAlertAction : UIAlertAction {
     
     typealias Handler = ((UIAlertAction) -> Void)
-    var handler: Handler?
+    var mockHandler: Handler?
     var mockTitle: String?
     var mockStyle: UIAlertActionStyle
     
@@ -69,13 +71,17 @@ class TestingAlertExperimentTests: XCTestCase {
       
       mockTitle = title
       mockStyle = style
-      self.handler = handler
+      self.mockHandler = handler
     }
     
     override init() {
       mockStyle = .Default
       
       super.init()
+    }
+    
+    override class func makeActionWithTitle(title: String?, style: UIAlertActionStyle, handler: ((UIAlertAction) -> Void)?) -> MockAlertAction {
+      return MockAlertAction(title: title, style: style, handler: handler)
     }
   }
 }

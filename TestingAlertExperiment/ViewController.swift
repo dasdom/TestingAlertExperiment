@@ -16,12 +16,12 @@ class ViewController: UIViewController {
   @IBAction func showAlert(sender: UIButton) {
     let alertViewController = UIAlertController(title: "Test Title", message: "Message", preferredStyle: .Alert)
     
-    let okAction = Action.init(title: "OK", style: .Default) { (action) -> Void in
-      self.actionString = "OK"
+    let okAction = Action.makeActionWithTitle("OK", style: .Default) { (action) -> Void in
+        self.actionString = "OK"
     }
     
-    let cancelAction = Action.init(title: "Cancel", style: .Cancel) { (action) -> Void in
-      self.actionString = "Cancel"
+    let cancelAction = Action.makeActionWithTitle("Cancel", style: .Default) { (action) -> Void in
+        self.actionString = "Cancel"
     }
     
     alertViewController.addAction(cancelAction)
@@ -29,4 +29,10 @@ class ViewController: UIViewController {
     
     presentViewController(alertViewController, animated: true, completion: nil)
   }
+}
+
+extension UIAlertAction {
+    class func makeActionWithTitle(title: String?, style: UIAlertActionStyle, handler: ((UIAlertAction) -> Void)?) -> UIAlertAction {
+        return UIAlertAction(title: title, style: style, handler: handler)
+    }
 }
