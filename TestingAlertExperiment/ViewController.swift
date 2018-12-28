@@ -14,25 +14,25 @@ class ViewController: UIViewController {
   var actionString: String?
   
   @IBAction func showAlert(sender: UIButton) {
-    let alertViewController = UIAlertController(title: "Test Title", message: "Message", preferredStyle: .Alert)
+    let alertViewController = UIAlertController(title: "Test Title", message: "Message", preferredStyle: .alert)
     
-    let okAction = Action.makeActionWithTitle("OK", style: .Default) { (action) -> Void in
+    let okAction = Action.makeActionWithTitle(title: "OK", style: .default) { (action) -> Void in
         self.actionString = "OK"
     }
     
-    let cancelAction = Action.makeActionWithTitle("Cancel", style: .Default) { (action) -> Void in
+    let cancelAction = Action.makeActionWithTitle(title: "Cancel", style: .default) { (action) -> Void in
         self.actionString = "Cancel"
     }
     
     alertViewController.addAction(cancelAction)
     alertViewController.addAction(okAction)
     
-    presentViewController(alertViewController, animated: true, completion: nil)
+    present(alertViewController, animated: true, completion: nil)
   }
 }
 
 extension UIAlertAction {
-    class func makeActionWithTitle(title: String?, style: UIAlertActionStyle, handler: ((UIAlertAction) -> Void)?) -> UIAlertAction {
+    @objc class func makeActionWithTitle(title: String?, style: UIAlertAction.Style, handler: ((UIAlertAction) -> Void)?) -> UIAlertAction {
         return UIAlertAction(title: title, style: style, handler: handler)
     }
 }
